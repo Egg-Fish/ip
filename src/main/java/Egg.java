@@ -26,28 +26,61 @@ public class Egg {
         printMessage("Hello! I'm Egg \nWhat can I do for you?");
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<String> messages = new ArrayList<>();
+        ArrayList<Task> tasks = new ArrayList<>();
         
         while (true) {
-            String message = scanner.nextLine();
+            String command = scanner.nextLine();
 
-            if (message.equals("bye")) {
+            if (command.equals("bye")) {
                 break;
             }
 
-            else if (message.equals("list")) {
+            else if (command.equals("list")) {
                 String s = "";
                 
-                for (int i = 0; i < messages.size(); i++) {
-                    s += (i + 1) + ". " + messages.get(i) + "\n";
+                for (int i = 0; i < tasks.size(); i++) {
+                    s += (i + 1) + "." + tasks.get(i) + "\n";
                 }
 
                 printMessage(s);
             }
+
+            else if (command.startsWith("mark ")) {
+                int index = Integer.parseInt(command.split(" ")[1]);
+
+                if (index < 1 || index > tasks.size()) {
+                    printMessage("invalid task number");
+                    continue;
+                }
+
+                Task task = tasks.get(index - 1);
+
+                task.mark();
+
+                printMessage("Nice! I've marked this task as done:\n  " + task);
+            }
+
+            else if (command.startsWith("unmark ")) {
+                int index = Integer.parseInt(command.split(" ")[1]);
+
+                if (index < 1 || index > tasks.size()) {
+                    printMessage("invalid task number");
+                    continue;
+                }
+
+                Task task = tasks.get(index - 1);
+
+                task.unmark();
+
+                printMessage("OK, I've marked this task as not done yet:\n  " + task);
+            }
             
             else {
-                printMessage("added: " + message);
-                messages.add(message);
+                String description = command;
+                
+                printMessage("added task: " + description);
+
+                tasks.add(new Task(description));
             }
         }
 
