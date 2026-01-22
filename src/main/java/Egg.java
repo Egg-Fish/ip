@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Egg {
     private static void print(String s, int indent){
@@ -24,18 +25,30 @@ public class Egg {
     public static void main(String[] args) {
         printMessage("Hello! I'm Egg \nWhat can I do for you?");
 
-        
-
         Scanner scanner = new Scanner(System.in);
+        ArrayList<String> messages = new ArrayList<>();
         
         while (true) {
-            String msg = scanner.nextLine();
+            String message = scanner.nextLine();
 
-            if (msg.equals("bye")) {
+            if (message.equals("bye")) {
                 break;
             }
 
-            printMessage(msg);
+            else if (message.equals("list")) {
+                String s = "";
+                
+                for (int i = 0; i < messages.size(); i++) {
+                    s += (i + 1) + ". " + messages.get(i) + "\n";
+                }
+
+                printMessage(s);
+            }
+            
+            else {
+                printMessage("added: " + message);
+                messages.add(message);
+            }
         }
 
         printMessage("Bye. Hope to see you again soon!");
