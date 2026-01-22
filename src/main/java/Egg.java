@@ -36,6 +36,16 @@ public class Egg {
         printMessage(l1 + l2 + l3);
     }
 
+    public static void deleteTask(Task task) {
+        tasks.remove(task);
+
+        String l1 = "Noted. I've removed this task:\n";
+        String l2 = "  " + task + "\n";
+        String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
+
+        printMessage(l1 + l2 + l3);
+    }
+
     public static void listTasks() {
         String s = "Here are the tasks in your list:\n";
                 
@@ -51,6 +61,7 @@ public class Egg {
     static Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
     static Pattern deadlinePattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
     static Pattern eventPattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
+    static Pattern deletePattern = Pattern.compile("^delete\\s+(\\d+)$");
     
     public static void main(String[] args) {
         printMessage("Hello! I'm Egg \nWhat can I do for you?");
@@ -69,6 +80,22 @@ public class Egg {
             if (command.equals("list")) {
                 listTasks();
 
+                continue;
+            }
+
+            matcher = deletePattern.matcher(command);
+            if (matcher.matches()) {
+                int index = Integer.parseInt(matcher.group(1));
+
+                if (index < 1 || index > tasks.size()) {
+                    printMessage("invalid task number " + index);
+                    continue;
+                }
+
+                Task task = tasks.get(index - 1);
+
+                deleteTask(task);
+                
                 continue;
             }
 
