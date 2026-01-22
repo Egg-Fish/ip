@@ -13,7 +13,7 @@ public class Egg {
     }
 
     private static void printMessage(String message) {
-        String hl = "------------------------------------------";
+        String hl = "---------------------------------------------";
         
         print(hl);
         
@@ -114,6 +114,10 @@ public class Egg {
                 addTask(new TodoTask(description));
 
                 continue;
+            } else if (command.startsWith("todo")) {
+                printMessage("please write a description of your todo task!");
+
+                continue;
             }
 
             matcher = deadlinePattern.matcher(command);
@@ -122,6 +126,10 @@ public class Egg {
                 String by = matcher.group(2);
                 
                 addTask(new DeadlineTask(description, by));
+
+                continue;
+            } else if (command.startsWith("deadline") && !command.contains("/by")) {
+                printMessage("please add a deadline using /by");
 
                 continue;
             }
@@ -133,6 +141,10 @@ public class Egg {
                 String to = matcher.group(3);
                 
                 addTask(new EventTask(description, from, to));
+
+                continue;
+            } else if (command.startsWith("event") && (!command.contains("/from") || !command.contains("/to"))) {
+                printMessage("please include both /from and /to");
 
                 continue;
             }
