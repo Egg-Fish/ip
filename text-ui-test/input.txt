@@ -1,0 +1,13 @@
+todo test out tester
+deadline finish this assignment /by tomorrow
+event :O /from  now /to  whenever :(
+list
+mark 1
+unmark 2
+mark 3
+list
+unmark 3
+list
+unmark 1
+list
+bye
