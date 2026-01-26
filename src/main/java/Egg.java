@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.io.File;
+import java.io.FileWriter;
 
 public class Egg {
     private static void print(String s, int indent){
@@ -56,6 +58,40 @@ public class Egg {
         printMessage(s);
     }
 
+    public static void loadTasks() {
+        new File("./data").mkdirs();
+
+        File file = new File("./data/tasks.txt");
+
+        try {
+            file.createNewFile();
+        } catch (Exception e) {
+            System.out.println("Could not open file ./data/tasks.txt");
+            return;
+        }
+        
+        for (Task task : tasks) {
+            System.out.println(task);
+        }
+    }
+
+    public static void storeTasks() {
+        new File("./data").mkdirs();
+
+        try {
+            FileWriter writer = new FileWriter("./data/tasks.txt");
+            
+            for (Task task : tasks) {
+                writer.write(task.toString() + "\n");
+            }
+
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Could not open file ./data/tasks.txt");
+            return;
+        }
+    }
+
     static Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
     static Pattern unmarkPattern = Pattern.compile("^unmark\\s+(\\d+)$");
     static Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
@@ -66,11 +102,15 @@ public class Egg {
     public static void main(String[] args) {
         printMessage("Hello! I'm Egg \nWhat can I do for you?");
 
+        loadTasks();
+
         Scanner scanner = new Scanner(System.in);
 
         Matcher matcher;
         
         while (true) {
+            storeTasks();
+        
             String command = scanner.nextLine();
 
             if (command.equals("bye")) {
