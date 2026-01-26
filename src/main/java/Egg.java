@@ -3,6 +3,13 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+
 public class Egg {
     private static void print(String s, int indent){
         System.out.println(" ".repeat(indent) + s);
@@ -56,21 +63,106 @@ public class Egg {
         printMessage(s);
     }
 
-    static Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
-    static Pattern unmarkPattern = Pattern.compile("^unmark\\s+(\\d+)$");
-    static Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
-    static Pattern deadlinePattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
-    static Pattern eventPattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
-    static Pattern deletePattern = Pattern.compile("^delete\\s+(\\d+)$");
+    public static String tasksFilename = "./data/tasks.txt";
+
+    public static void loadTask(String taskString) {
+        Matcher matcher;
+
+        Pattern todoPattern = Pattern.compile("\\[T\\]\\[([ X])\\] ([^\\n]+)");
+        matcher = todoPattern.matcher(taskString);
+        if (matcher.matches()) {
+            boolean isMarked = matcher.group(1).equals("X");
+            String description = matcher.group(2);
+
+            Task task = new TodoTask(description);
+            if (isMarked) {
+                task.mark();
+            }
+            tasks.add(task);
+        }
+
+        Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\n]+)\\)");
+        matcher = deadlinePattern.matcher(taskString);
+        if (matcher.matches()) {
+            boolean isMarked = matcher.group(1).equals("X");
+            String description = matcher.group(2);
+            String by = matcher.group(3);
+
+            Task task = new DeadlineTask(description, by);
+            if (isMarked) {
+                task.mark();
+            }
+            tasks.add(task);
+        }
+
+        Pattern eventPattern = Pattern.compile("\\[E\\]\\[([ X])\\] ([^(]+) \\(from: ([^\\n]+) to: ([^\\n]+)\\)");
+        matcher = eventPattern.matcher(taskString);
+        if (matcher.matches()) {
+            boolean isMarked = matcher.group(1).equals("X");
+            String description = matcher.group(2);
+            String from = matcher.group(3);
+            String to = matcher.group(4);
+
+            Task task = new EventTask(description, from, to);
+            if (isMarked) {
+                task.mark();
+            }
+            tasks.add(task);
+        }
+    }
+
+    public static void loadTasks() {
+        new File("./data").mkdirs();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(tasksFilename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                loadTask(line);
+            }
+        } catch (Exception e) {
+            System.out.println("GG");
+            e.printStackTrace();
+        }
+    }
+
+    public static void storeTasks() {
+        new File("./data").mkdirs();
+
+        try {
+            FileWriter writer = new FileWriter(tasksFilename);
+            
+            for (Task task : tasks) {
+                writer.write(task.toString() + "\n");
+            }
+
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Could not open file ./data/tasks.txt");
+            return;
+        }
+    }
+
+    
     
     public static void main(String[] args) {
+        Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
+        Pattern unmarkPattern = Pattern.compile("^unmark\\s+(\\d+)$");
+        Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
+        Pattern deadlinePattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
+        Pattern eventPattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
+        Pattern deletePattern = Pattern.compile("^delete\\s+(\\d+)$");
+    
         printMessage("Hello! I'm Egg \nWhat can I do for you?");
+
+        loadTasks();
 
         Scanner scanner = new Scanner(System.in);
 
         Matcher matcher;
         
         while (true) {
+            storeTasks();
+        
             String command = scanner.nextLine();
 
             if (command.equals("bye")) {
