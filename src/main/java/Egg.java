@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.time.LocalDate;
+
 
 public class Egg {
     private static void print(String s, int indent){
@@ -97,8 +99,9 @@ public class Egg {
             while ((line = reader.readLine()) != null) {
                 loadTask(line);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Could not open file ./data/tasks.txt");
+            return;
         }
     }
 
@@ -113,7 +116,7 @@ public class Egg {
             }
 
             writer.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Could not open file ./data/tasks.txt");
             return;
         }
@@ -128,11 +131,16 @@ public class Egg {
         Pattern deadlinePattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
         Pattern eventPattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
         Pattern deletePattern = Pattern.compile("^delete\\s+(\\d+)$");
-    
+ 
+        try {
+            loadTasks();
+        } catch (Exception e) {
+            printMessage("Error: Could not load tasks.");
+            return;
+        }
+
         printMessage("Hello! I'm Egg \nWhat can I do for you?");
-
-        loadTasks();
-
+   
         Scanner scanner = new Scanner(System.in);
 
         Matcher matcher;
@@ -219,10 +227,15 @@ public class Egg {
             matcher = deadlinePattern.matcher(command);
             if (matcher.matches()) {
                 String description = matcher.group(1);
-                String by = matcher.group(2);
-                
-                addTask(new DeadlineTask(description, by));
+                String byString = matcher.group(2);
 
+                try {
+                    LocalDate by = LocalDate.parse(byString);
+                    addTask(new DeadlineTask(description, by));
+                } catch (Exception e) {
+                    printMessage("could not parse as date: " + byString);
+                }
+                
                 continue;
             } else if (command.startsWith("deadline") && !command.contains("/by")) {
                 printMessage("please add a deadline using /by");
