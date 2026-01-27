@@ -100,7 +100,6 @@ public class Egg {
                 loadTask(line);
             }
         } catch (IOException e) {
-            System.out.println("Could not open file ./data/tasks.txt");
             return;
         }
     }
@@ -246,9 +245,31 @@ public class Egg {
             matcher = eventPattern.matcher(command);
             if (matcher.matches()) {
                 String description = matcher.group(1);
-                String from = matcher.group(2);
-                String to = matcher.group(3);
+                String fromString = matcher.group(2);
+                String toString = matcher.group(3);
                 
+                LocalDate from;
+                LocalDate to;
+
+                try {
+                    from = LocalDate.parse(fromString);
+                } catch (Exception e) {
+                    printMessage("could not parse as date: " + fromString);
+                    continue;
+                }
+
+                try {
+                    to = LocalDate.parse(toString);
+                } catch (Exception e) {
+                    printMessage("could not parse as date: " + toString);
+                    continue;
+                }
+
+                if (from.isAfter(to)) {
+                    printMessage("start date cannot be after end date");
+                    continue;
+                }
+
                 addTask(new EventTask(description, from, to));
 
                 continue;
