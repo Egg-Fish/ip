@@ -15,8 +15,8 @@ public class Egg {
         System.out.println(" ".repeat(indent) + s);
     }
 
-     private static void print(String s){
-         print(s, 4);
+    private static void print(String s){
+        print(s, 4);
     }
 
     private static void printMessage(String message) {
@@ -66,48 +66,26 @@ public class Egg {
     public static String tasksFilename = "./data/tasks.txt";
 
     public static void loadTask(String taskString) {
-        Matcher matcher;
+        if (taskString.startsWith("[T]")) {
+            tasks.add(TodoTask.fromString(taskString));
 
-        Pattern todoPattern = Pattern.compile("\\[T\\]\\[([ X])\\] ([^\\n]+)");
-        matcher = todoPattern.matcher(taskString);
-        if (matcher.matches()) {
-            boolean isMarked = matcher.group(1).equals("X");
-            String description = matcher.group(2);
-
-            Task task = new TodoTask(description);
-            if (isMarked) {
-                task.mark();
-            }
-            tasks.add(task);
+            return;
         }
 
-        Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\n]+)\\)");
-        matcher = deadlinePattern.matcher(taskString);
-        if (matcher.matches()) {
-            boolean isMarked = matcher.group(1).equals("X");
-            String description = matcher.group(2);
-            String by = matcher.group(3);
+        if (taskString.startsWith("[D]")) {
+            tasks.add(DeadlineTask.fromString(taskString));
 
-            Task task = new DeadlineTask(description, by);
-            if (isMarked) {
-                task.mark();
-            }
-            tasks.add(task);
+            return;
         }
 
-        Pattern eventPattern = Pattern.compile("\\[E\\]\\[([ X])\\] ([^(]+) \\(from: ([^\\n]+) to: ([^\\n]+)\\)");
-        matcher = eventPattern.matcher(taskString);
-        if (matcher.matches()) {
-            boolean isMarked = matcher.group(1).equals("X");
-            String description = matcher.group(2);
-            String from = matcher.group(3);
-            String to = matcher.group(4);
+        if (taskString.startsWith("[E]")) {
+            tasks.add(EventTask.fromString(taskString));
 
-            Task task = new EventTask(description, from, to);
-            if (isMarked) {
-                task.mark();
-            }
-            tasks.add(task);
+            return;
+        }
+
+        else {
+            throw new RuntimeException("Could not parse as task: " + taskString);
         }
     }
 
@@ -120,8 +98,7 @@ public class Egg {
                 loadTask(line);
             }
         } catch (Exception e) {
-            System.out.println("GG");
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
