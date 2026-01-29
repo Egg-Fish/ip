@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -14,31 +15,37 @@ import java.time.LocalDate;
 
 public class Egg {
     private Ui ui;
-    
-    public ArrayList<Task> tasks = new ArrayList<>();
+    private TaskList taskList;
+
+    public Egg() {
+        ui = new Ui();
+        taskList = new TaskList();
+    }
 
     public void addTask(Task task) {
-        tasks.add(task);
+        taskList.addTask(task);
 
         String l1 = "Got it. I've added this task:\n";
         String l2 = "  " + task + "\n";
-        String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
+        String l3 = "Now you have " + taskList.getSize() + " task(s) in the list.";
 
         ui.printMessage(l1 + l2 + l3);
     }
 
     public void deleteTask(Task task) {
-        tasks.remove(task);
+        taskList.deleteTask(task);
 
         String l1 = "Noted. I've removed this task:\n";
         String l2 = "  " + task + "\n";
-        String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
+        String l3 = "Now you have " + taskList.getSize() + " task(s) in the list.";
 
         ui.printMessage(l1 + l2 + l3);
     }
 
     public void listTasks() {
         String s = "Here are the tasks in your list:\n";
+
+        List<Task> tasks = taskList.getTasks();
                 
         for (int i = 0; i < tasks.size(); i++) {
             s += (i + 1) + "." + tasks.get(i) + "\n";
@@ -51,19 +58,19 @@ public class Egg {
 
     public void loadTask(String taskString) {
         if (taskString.startsWith("[T]")) {
-            tasks.add(TodoTask.fromString(taskString));
+            taskList.addTask(TodoTask.fromString(taskString));
 
             return;
         }
 
         if (taskString.startsWith("[D]")) {
-            tasks.add(DeadlineTask.fromString(taskString));
+            taskList.addTask(DeadlineTask.fromString(taskString));
 
             return;
         }
 
         if (taskString.startsWith("[E]")) {
-            tasks.add(EventTask.fromString(taskString));
+            taskList.addTask(EventTask.fromString(taskString));
 
             return;
         }
@@ -88,6 +95,8 @@ public class Egg {
 
     public void storeTasks() {
         new File("./data").mkdirs();
+
+        List<Task> tasks = taskList.getTasks();
 
         try {
             FileWriter writer = new FileWriter(tasksFilename);
@@ -123,7 +132,6 @@ public class Egg {
         ui.printMessage("Hello! I'm Egg \nWhat can I do for you?");
    
         Scanner scanner = new Scanner(System.in);
-
         Matcher matcher;
         
         while (true) {
@@ -145,12 +153,12 @@ public class Egg {
             if (matcher.matches()) {
                 int index = Integer.parseInt(matcher.group(1));
 
-                if (index < 1 || index > tasks.size()) {
+                if (index < 1 || index > taskList.getSize()) {
                     ui.printMessage("invalid task number " + index);
                     continue;
                 }
 
-                Task task = tasks.get(index - 1);
+                Task task = taskList.getTaskAtIndex(index);
 
                 deleteTask(task);
                 
@@ -161,12 +169,12 @@ public class Egg {
             if (matcher.matches()) {
                 int index = Integer.parseInt(matcher.group(1));
 
-                if (index < 1 || index > tasks.size()) {
+                if (index < 1 || index > taskList.getSize()) {
                     ui.printMessage("invalid task number " + index);
                     continue;
                 }
 
-                Task task = tasks.get(index - 1);
+                Task task = taskList.getTaskAtIndex(index);
 
                 task.mark();
 
@@ -179,12 +187,12 @@ public class Egg {
             if (matcher.matches()) {
                 int index = Integer.parseInt(matcher.group(1));
 
-                if (index < 1 || index > tasks.size()) {
+                if (index < 1 || index > taskList.getSize()) {
                     ui.printMessage("invalid task number " + index);
                     continue;
                 }
 
-                Task task = tasks.get(index - 1);
+                Task task = taskList.getTaskAtIndex(index);
 
                 task.unmark();
 
