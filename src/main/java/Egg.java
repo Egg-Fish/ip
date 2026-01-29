@@ -16,10 +16,12 @@ import java.time.LocalDate;
 public class Egg {
     private Ui ui;
     private TaskList taskList;
-
+    private Storage storage;
+    
     public Egg() {
         ui = new Ui();
-        taskList = new TaskList();
+        storage = new Storage("../data/tasks.txt");
+        taskList = storage.load();
     }
 
     public void addTask(Task task) {
@@ -39,64 +41,6 @@ public class Egg {
     }
 
     public static String tasksFilename = "./data/tasks.txt";
-
-    public void loadTask(String taskString) {
-        if (taskString.startsWith("[T]")) {
-            taskList.addTask(TodoTask.fromString(taskString));
-
-            return;
-        }
-
-        if (taskString.startsWith("[D]")) {
-            taskList.addTask(DeadlineTask.fromString(taskString));
-
-            return;
-        }
-
-        if (taskString.startsWith("[E]")) {
-            taskList.addTask(EventTask.fromString(taskString));
-
-            return;
-        }
-
-        else {
-            throw new RuntimeException("Could not parse as task: " + taskString);
-        }
-    }
-
-    public void loadTasks() {
-        new File("./data").mkdirs();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(tasksFilename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                loadTask(line);
-            }
-        } catch (IOException e) {
-            return;
-        }
-    }
-
-    public void storeTasks() {
-        new File("./data").mkdirs();
-
-        List<Task> tasks = taskList.getTasks();
-
-        try {
-            FileWriter writer = new FileWriter(tasksFilename);
-            
-            for (Task task : tasks) {
-                writer.write(task.toString() + "\n");
-            }
-
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Could not open file ./data/tasks.txt");
-            return;
-        }
-    }
-
-    
     
     public void run() {
         Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
@@ -105,13 +49,6 @@ public class Egg {
         Pattern deadlinePattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
         Pattern eventPattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
         Pattern deletePattern = Pattern.compile("^delete\\s+(\\d+)$");
- 
-        try {
-            loadTasks();
-        } catch (Exception e) {
-            ui.printMessage("Error: Could not load tasks.");
-            return;
-        }
 
         ui.printMessage("Hello! I'm Egg \nWhat can I do for you?");
    
@@ -119,7 +56,7 @@ public class Egg {
         Matcher matcher;
         
         while (true) {
-            storeTasks();
+            storage.store(taskList);
         
             String command = scanner.nextLine();
 
