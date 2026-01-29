@@ -125,7 +125,9 @@ public class Egg {
             if (matcher.matches()) {
                 String description = matcher.group(1);
                 
-                addTask(new TodoTask(description));
+                Task newTask = new TodoTask(description);
+                Command c = new AddCommand(newTask);
+                c.execute(taskList, ui, storage);
 
                 continue;
             } else if (command.startsWith("todo")) {
@@ -141,7 +143,11 @@ public class Egg {
 
                 try {
                     LocalDate by = LocalDate.parse(byString);
-                    addTask(new DeadlineTask(description, by));
+                    
+                    Task newTask = new DeadlineTask(description, by);
+                    Command c = new AddCommand(newTask);
+                    c.execute(taskList, ui, storage);
+                
                 } catch (Exception e) {
                     ui.printMessage("could not parse as date: " + byString);
                 }
@@ -181,7 +187,9 @@ public class Egg {
                     continue;
                 }
 
-                addTask(new EventTask(description, from, to));
+                Task newTask = new EventTask(description, from, to);
+                Command c = new AddCommand(newTask);
+                c.execute(taskList, ui, storage);
 
                 continue;
             } else if (command.startsWith("event") && (!command.contains("/from") || !command.contains("/to"))) {
