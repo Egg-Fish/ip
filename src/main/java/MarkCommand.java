@@ -11,6 +11,7 @@ public class MarkCommand extends Command {
             Task task = tasks.getTaskAtIndex(index);
             task.mark();
             ui.printMessage("Nice! I've marked this task as done:\n  " + task);
+            storage.store(tasks);
         } catch (IndexOutOfBoundsException e) {
             ui.printMessage("Index " + index + " out of bounds");
         }

@@ -11,6 +11,7 @@ public class UnmarkCommand extends Command {
             Task task = tasks.getTaskAtIndex(index);
             task.unmark();
             ui.printMessage("OK, I've marked this task as not done yet:\n  " + task);
+            storage.store(tasks);
         } catch (IndexOutOfBoundsException e) {
             ui.printMessage("Index " + index + " out of bounds");
         }
