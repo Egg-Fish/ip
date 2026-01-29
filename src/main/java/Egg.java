@@ -32,19 +32,10 @@ public class Egg {
         taskList.deleteTask(task);
 
         ui.printTaskDeletedMessage(taskList, task);
-
     }
 
     public void listTasks() {
-        String s = "Here are the tasks in your list:\n";
-
-        List<Task> tasks = taskList.getTasks();
-                
-        for (int i = 0; i < tasks.size(); i++) {
-            s += (i + 1) + "." + tasks.get(i) + "\n";
-        }
-
-        ui.printMessage(s);
+        ui.printTaskList(taskList);
     }
 
     public static String tasksFilename = "./data/tasks.txt";
