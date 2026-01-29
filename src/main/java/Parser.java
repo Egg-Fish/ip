@@ -42,6 +42,36 @@ public class Parser {
             throw new RuntimeException("Could not parse as deadline command: " + commandString);
         }
     }
+
+    public static Command parseMarkCommand(String commandString) {
+        Pattern pattern = Pattern.compile("^mark\\s+(\\d+)$");
+        Matcher matcher = pattern.matcher(commandString);
+        
+        if (matcher.matches()) {
+            int index = Integer.parseInt(matcher.group(1));
+                
+            Command command = new MarkCommand(index);
+            
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as mark command: " + commandString);
+        }
+    }
+
+    public static Command parseUnmarkCommand(String commandString) {
+        Pattern pattern = Pattern.compile("^unmark\\s+(\\d+)$");
+        Matcher matcher = pattern.matcher(commandString);
+        
+        if (matcher.matches()) {
+            int index = Integer.parseInt(matcher.group(1));
+                
+            Command command = new UnmarkCommand(index);
+            
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as unmark command: " + commandString);
+        }
+    }
     
     public static Command parseCommand(String commandString) {
         String first = commandString.trim().split(" ", 2)[0];
@@ -51,6 +81,10 @@ public class Parser {
             return parseTodoCommand(commandString);
         case "deadline":
             return parseDeadlineCommand(commandString);
+        case "mark":
+            return parseMarkCommand(commandString);
+        case "unmark":
+            return parseUnmarkCommand(commandString);
         case "list":
             return new ListCommand();
         case "bye":

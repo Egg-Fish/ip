@@ -50,12 +50,16 @@ public class Egg {
         while (true) {
             String commandString = scanner.nextLine().trim();
 
-            Command command = Parser.parseCommand(commandString);
+            try {
+                Command command = Parser.parseCommand(commandString);
 
-            command.execute(taskList, ui, storage);
-
-            if (commandString.equals("bye")) {
-                break;
+                command.execute(taskList, ui, storage);
+            } catch (RuntimeException e){
+                ui.printMessage(e.getMessage());
+            } finally {
+                if (commandString.equals("bye")) {
+                    return;
+                }
             }
         }
         
