@@ -24,4 +24,12 @@ public class Ui {
         
         print(hl);
     }
+
+    public static void printTaskAddedMessage(TaskList tasks, Task addedTask) {
+        String l1 = "Got it. I've added this task:\n";
+        String l2 = "  " + addedTask + "\n";
+        String l3 = "Now you have " + tasks.getSize() + " task(s) in the list.";
+
+        printMessage(l1 + l2 + l3);
+    }
 }

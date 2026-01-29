@@ -25,11 +25,7 @@ public class Egg {
     public void addTask(Task task) {
         taskList.addTask(task);
 
-        String l1 = "Got it. I've added this task:\n";
-        String l2 = "  " + task + "\n";
-        String l3 = "Now you have " + taskList.getSize() + " task(s) in the list.";
-
-        ui.printMessage(l1 + l2 + l3);
+        ui.printTaskAddedMessage(taskList, task);
     }
 
     public void deleteTask(Task task) {
