@@ -43,6 +43,43 @@ public class Parser {
         }
     }
 
+    public static Command parseEventCommand(String commandString) {
+        Pattern pattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
+        Matcher matcher = pattern.matcher(commandString);
+        
+        if (matcher.matches()) {
+            String description = matcher.group(1);
+            String fromString = matcher.group(2);
+            String toString = matcher.group(3);
+                
+            LocalDate from;
+            LocalDate to;
+
+            try {
+                from = LocalDate.parse(fromString);
+            } catch (Exception e) {
+                throw new RuntimeException("Could not parse as date: " + fromString);
+            }
+
+            try {
+                to = LocalDate.parse(toString);
+            } catch (Exception e) {
+                throw new RuntimeException("Could not parse as date: " + toString);
+            }
+
+            if (from.isAfter(to)) {
+                throw new RuntimeException("Start date cannot be after end date");
+            }
+
+            Task newTask = new EventTask(description, from, to);
+            Command command = new AddCommand(newTask);
+
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as event command: " + commandString);
+        }
+    }
+
     public static Command parseMarkCommand(String commandString) {
         Pattern pattern = Pattern.compile("^mark\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
@@ -81,6 +118,8 @@ public class Parser {
             return parseTodoCommand(commandString);
         case "deadline":
             return parseDeadlineCommand(commandString);
+        case "event":
+            return parseEventCommand(commandString);
         case "mark":
             return parseMarkCommand(commandString);
         case "unmark":
