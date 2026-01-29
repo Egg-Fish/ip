@@ -1,287 +1,39 @@
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
-import java.time.LocalDate;
-
 
 public class Egg {
-    private static void print(String s, int indent){
-        System.out.println(" ".repeat(indent) + s);
-    }
-
-    private static void print(String s){
-        print(s, 4);
-    }
-
-    private static void printMessage(String message) {
-        String hl = "---------------------------------------------";
-        
-        print(hl);
-        
-        for (String m : message.split("\n")) {
-            print(m);
-        }
-        
-        print(hl);
-    }
-
-    public static ArrayList<Task> tasks = new ArrayList<>();
-
-    public static void addTask(Task task) {
-        tasks.add(task);
-
-        String l1 = "Got it. I've added this task:\n";
-        String l2 = "  " + task + "\n";
-        String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
-
-        printMessage(l1 + l2 + l3);
-    }
-
-    public static void deleteTask(Task task) {
-        tasks.remove(task);
-
-        String l1 = "Noted. I've removed this task:\n";
-        String l2 = "  " + task + "\n";
-        String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
-
-        printMessage(l1 + l2 + l3);
-    }
-
-    public static void listTasks() {
-        String s = "Here are the tasks in your list:\n";
-                
-        for (int i = 0; i < tasks.size(); i++) {
-            s += (i + 1) + "." + tasks.get(i) + "\n";
-        }
-
-        printMessage(s);
-    }
-
-    public static String tasksFilename = "./data/tasks.txt";
-
-    public static void loadTask(String taskString) {
-        if (taskString.startsWith("[T]")) {
-            tasks.add(TodoTask.fromString(taskString));
-
-            return;
-        }
-
-        if (taskString.startsWith("[D]")) {
-            tasks.add(DeadlineTask.fromString(taskString));
-
-            return;
-        }
-
-        if (taskString.startsWith("[E]")) {
-            tasks.add(EventTask.fromString(taskString));
-
-            return;
-        }
-
-        else {
-            throw new RuntimeException("Could not parse as task: " + taskString);
-        }
-    }
-
-    public static void loadTasks() {
-        new File("./data").mkdirs();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(tasksFilename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                loadTask(line);
-            }
-        } catch (IOException e) {
-            return;
-        }
-    }
-
-    public static void storeTasks() {
-        new File("./data").mkdirs();
-
-        try {
-            FileWriter writer = new FileWriter(tasksFilename);
-            
-            for (Task task : tasks) {
-                writer.write(task.toString() + "\n");
-            }
-
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Could not open file ./data/tasks.txt");
-            return;
-        }
-    }
-
+    private Ui ui;
+    private TaskList taskList;
+    private Storage storage;
     
-    
-    public static void main(String[] args) {
-        Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
-        Pattern unmarkPattern = Pattern.compile("^unmark\\s+(\\d+)$");
-        Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
-        Pattern deadlinePattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
-        Pattern eventPattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
-        Pattern deletePattern = Pattern.compile("^delete\\s+(\\d+)$");
- 
-        try {
-            loadTasks();
-        } catch (Exception e) {
-            printMessage("Error: Could not load tasks.");
-            return;
-        }
+    public Egg() {
+        ui = new Ui();
+        storage = new Storage("./data/tasks.txt");
+        taskList = storage.load();
+    }
 
-        printMessage("Hello! I'm Egg \nWhat can I do for you?");
-   
+    public void run() {
+        ui.printMessage("Hello! I'm Egg \nWhat can I do for you?");
+
         Scanner scanner = new Scanner(System.in);
 
-        Matcher matcher;
-        
         while (true) {
-            storeTasks();
-        
-            String command = scanner.nextLine();
+            String commandString = scanner.nextLine().trim();
 
-            if (command.equals("bye")) {
-                break;
-            }
+            try {
+                Command command = Parser.parseCommand(commandString);
 
-            if (command.equals("list")) {
-                listTasks();
-
-                continue;
-            }
-
-            matcher = deletePattern.matcher(command);
-            if (matcher.matches()) {
-                int index = Integer.parseInt(matcher.group(1));
-
-                if (index < 1 || index > tasks.size()) {
-                    printMessage("invalid task number " + index);
-                    continue;
-                }
-
-                Task task = tasks.get(index - 1);
-
-                deleteTask(task);
-                
-                continue;
-            }
-
-            matcher = markPattern.matcher(command);
-            if (matcher.matches()) {
-                int index = Integer.parseInt(matcher.group(1));
-
-                if (index < 1 || index > tasks.size()) {
-                    printMessage("invalid task number " + index);
-                    continue;
-                }
-
-                Task task = tasks.get(index - 1);
-
-                task.mark();
-
-                printMessage("Nice! I've marked this task as done:\n  " + task);
-                
-                continue;
-            }
-
-            matcher = unmarkPattern.matcher(command);
-            if (matcher.matches()) {
-                int index = Integer.parseInt(matcher.group(1));
-
-                if (index < 1 || index > tasks.size()) {
-                    printMessage("invalid task number " + index);
-                    continue;
-                }
-
-                Task task = tasks.get(index - 1);
-
-                task.unmark();
-
-                printMessage("OK, I've marked this task as not done yet:\n  " + task);
-                continue;
+                command.execute(taskList, ui, storage);
+            } catch (RuntimeException e){
+                ui.printMessage(e.getMessage());
             }
             
-            matcher = todoPattern.matcher(command);
-            if (matcher.matches()) {
-                String description = matcher.group(1);
-                
-                addTask(new TodoTask(description));
-
-                continue;
-            } else if (command.startsWith("todo")) {
-                printMessage("please write a description of your todo task!");
-
-                continue;
+            if (commandString.equals("bye")) {
+                return;
             }
-
-            matcher = deadlinePattern.matcher(command);
-            if (matcher.matches()) {
-                String description = matcher.group(1);
-                String byString = matcher.group(2);
-
-                try {
-                    LocalDate by = LocalDate.parse(byString);
-                    addTask(new DeadlineTask(description, by));
-                } catch (Exception e) {
-                    printMessage("could not parse as date: " + byString);
-                }
-                
-                continue;
-            } else if (command.startsWith("deadline") && !command.contains("/by")) {
-                printMessage("please add a deadline using /by");
-
-                continue;
-            }
-
-            matcher = eventPattern.matcher(command);
-            if (matcher.matches()) {
-                String description = matcher.group(1);
-                String fromString = matcher.group(2);
-                String toString = matcher.group(3);
-                
-                LocalDate from;
-                LocalDate to;
-
-                try {
-                    from = LocalDate.parse(fromString);
-                } catch (Exception e) {
-                    printMessage("could not parse as date: " + fromString);
-                    continue;
-                }
-
-                try {
-                    to = LocalDate.parse(toString);
-                } catch (Exception e) {
-                    printMessage("could not parse as date: " + toString);
-                    continue;
-                }
-
-                if (from.isAfter(to)) {
-                    printMessage("start date cannot be after end date");
-                    continue;
-                }
-
-                addTask(new EventTask(description, from, to));
-
-                continue;
-            } else if (command.startsWith("event") && (!command.contains("/from") || !command.contains("/to"))) {
-                printMessage("please include both /from and /to");
-
-                continue;
-            }
-
-            printMessage("I don't understand, could you say that again?");
         }
+    }
 
-        printMessage("Bye. Hope to see you again soon!");
+    public static void main(String[] args) {
+        new Egg().run();
     }
 }
