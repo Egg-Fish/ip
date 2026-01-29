@@ -13,61 +13,43 @@ import java.time.LocalDate;
 
 
 public class Egg {
-    private static void print(String s, int indent){
-        System.out.println(" ".repeat(indent) + s);
-    }
+    private Ui ui;
+    
+    public ArrayList<Task> tasks = new ArrayList<>();
 
-    private static void print(String s){
-        print(s, 4);
-    }
-
-    private static void printMessage(String message) {
-        String hl = "---------------------------------------------";
-        
-        print(hl);
-        
-        for (String m : message.split("\n")) {
-            print(m);
-        }
-        
-        print(hl);
-    }
-
-    public static ArrayList<Task> tasks = new ArrayList<>();
-
-    public static void addTask(Task task) {
+    public void addTask(Task task) {
         tasks.add(task);
 
         String l1 = "Got it. I've added this task:\n";
         String l2 = "  " + task + "\n";
         String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
 
-        printMessage(l1 + l2 + l3);
+        ui.printMessage(l1 + l2 + l3);
     }
 
-    public static void deleteTask(Task task) {
+    public void deleteTask(Task task) {
         tasks.remove(task);
 
         String l1 = "Noted. I've removed this task:\n";
         String l2 = "  " + task + "\n";
         String l3 = "Now you have " + tasks.size() + " task(s) in the list.";
 
-        printMessage(l1 + l2 + l3);
+        ui.printMessage(l1 + l2 + l3);
     }
 
-    public static void listTasks() {
+    public void listTasks() {
         String s = "Here are the tasks in your list:\n";
                 
         for (int i = 0; i < tasks.size(); i++) {
             s += (i + 1) + "." + tasks.get(i) + "\n";
         }
 
-        printMessage(s);
+        ui.printMessage(s);
     }
 
     public static String tasksFilename = "./data/tasks.txt";
 
-    public static void loadTask(String taskString) {
+    public void loadTask(String taskString) {
         if (taskString.startsWith("[T]")) {
             tasks.add(TodoTask.fromString(taskString));
 
@@ -91,7 +73,7 @@ public class Egg {
         }
     }
 
-    public static void loadTasks() {
+    public void loadTasks() {
         new File("./data").mkdirs();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(tasksFilename))) {
@@ -104,7 +86,7 @@ public class Egg {
         }
     }
 
-    public static void storeTasks() {
+    public void storeTasks() {
         new File("./data").mkdirs();
 
         try {
@@ -123,7 +105,7 @@ public class Egg {
 
     
     
-    public static void main(String[] args) {
+    public void run() {
         Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
         Pattern unmarkPattern = Pattern.compile("^unmark\\s+(\\d+)$");
         Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
@@ -134,11 +116,11 @@ public class Egg {
         try {
             loadTasks();
         } catch (Exception e) {
-            printMessage("Error: Could not load tasks.");
+            ui.printMessage("Error: Could not load tasks.");
             return;
         }
 
-        printMessage("Hello! I'm Egg \nWhat can I do for you?");
+        ui.printMessage("Hello! I'm Egg \nWhat can I do for you?");
    
         Scanner scanner = new Scanner(System.in);
 
@@ -164,7 +146,7 @@ public class Egg {
                 int index = Integer.parseInt(matcher.group(1));
 
                 if (index < 1 || index > tasks.size()) {
-                    printMessage("invalid task number " + index);
+                    ui.printMessage("invalid task number " + index);
                     continue;
                 }
 
@@ -180,7 +162,7 @@ public class Egg {
                 int index = Integer.parseInt(matcher.group(1));
 
                 if (index < 1 || index > tasks.size()) {
-                    printMessage("invalid task number " + index);
+                    ui.printMessage("invalid task number " + index);
                     continue;
                 }
 
@@ -188,7 +170,7 @@ public class Egg {
 
                 task.mark();
 
-                printMessage("Nice! I've marked this task as done:\n  " + task);
+                ui.printMessage("Nice! I've marked this task as done:\n  " + task);
                 
                 continue;
             }
@@ -198,7 +180,7 @@ public class Egg {
                 int index = Integer.parseInt(matcher.group(1));
 
                 if (index < 1 || index > tasks.size()) {
-                    printMessage("invalid task number " + index);
+                    ui.printMessage("invalid task number " + index);
                     continue;
                 }
 
@@ -206,7 +188,7 @@ public class Egg {
 
                 task.unmark();
 
-                printMessage("OK, I've marked this task as not done yet:\n  " + task);
+                ui.printMessage("OK, I've marked this task as not done yet:\n  " + task);
                 continue;
             }
             
@@ -218,7 +200,7 @@ public class Egg {
 
                 continue;
             } else if (command.startsWith("todo")) {
-                printMessage("please write a description of your todo task!");
+                ui.printMessage("please write a description of your todo task!");
 
                 continue;
             }
@@ -232,12 +214,12 @@ public class Egg {
                     LocalDate by = LocalDate.parse(byString);
                     addTask(new DeadlineTask(description, by));
                 } catch (Exception e) {
-                    printMessage("could not parse as date: " + byString);
+                    ui.printMessage("could not parse as date: " + byString);
                 }
                 
                 continue;
             } else if (command.startsWith("deadline") && !command.contains("/by")) {
-                printMessage("please add a deadline using /by");
+                ui.printMessage("please add a deadline using /by");
 
                 continue;
             }
@@ -254,19 +236,19 @@ public class Egg {
                 try {
                     from = LocalDate.parse(fromString);
                 } catch (Exception e) {
-                    printMessage("could not parse as date: " + fromString);
+                    ui.printMessage("could not parse as date: " + fromString);
                     continue;
                 }
 
                 try {
                     to = LocalDate.parse(toString);
                 } catch (Exception e) {
-                    printMessage("could not parse as date: " + toString);
+                    ui.printMessage("could not parse as date: " + toString);
                     continue;
                 }
 
                 if (from.isAfter(to)) {
-                    printMessage("start date cannot be after end date");
+                    ui.printMessage("start date cannot be after end date");
                     continue;
                 }
 
@@ -274,14 +256,18 @@ public class Egg {
 
                 continue;
             } else if (command.startsWith("event") && (!command.contains("/from") || !command.contains("/to"))) {
-                printMessage("please include both /from and /to");
+                ui.printMessage("please include both /from and /to");
 
                 continue;
             }
 
-            printMessage("I don't understand, could you say that again?");
+            ui.printMessage("I don't understand, could you say that again?");
         }
 
-        printMessage("Bye. Hope to see you again soon!");
+        ui.printMessage("Bye. Hope to see you again soon!");
+    }
+
+    public static void main(String[] args) {
+        new Egg().run();
     }
 }
