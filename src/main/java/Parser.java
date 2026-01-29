@@ -51,6 +51,8 @@ public class Parser {
             return parseTodoCommand(commandString);
         case "deadline":
             return parseDeadlineCommand(commandString);
+        case "list":
+            return new ListCommand();
         case "bye":
             return new ByeCommand();
         default:
