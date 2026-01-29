@@ -109,6 +109,21 @@ public class Parser {
             throw new RuntimeException("Could not parse as unmark command: " + commandString);
         }
     }
+
+    public static Command parseDeleteCommand(String commandString) {
+        Pattern pattern = Pattern.compile("^delete\\s+(\\d+)$");
+        Matcher matcher = pattern.matcher(commandString);
+        
+        if (matcher.matches()) {
+            int index = Integer.parseInt(matcher.group(1));
+                
+            Command command = new DeleteCommand(index);
+            
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as delete command: " + commandString);
+        }
+    }
     
     public static Command parseCommand(String commandString) {
         String first = commandString.trim().split(" ", 2)[0];
@@ -124,6 +139,8 @@ public class Parser {
             return parseMarkCommand(commandString);
         case "unmark":
             return parseUnmarkCommand(commandString);
+        case "delete":
+            return parseDeleteCommand(commandString);
         case "list":
             return new ListCommand();
         case "bye":
