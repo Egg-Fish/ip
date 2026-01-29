@@ -1,17 +1,24 @@
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class DeadlineTask extends Task {
-    protected String by;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public DeadlineTask(String description, String by) {
+public class DeadlineTask extends Task {
+    protected LocalDate by;
+
+    public DeadlineTask(String description, LocalDate by) {
         super(description);
         this.by = by;
     }
 
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
+
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        String byString = by.format(dateFormatter);
+        
+        return "[D]" + super.toString() + " (by: " + byString + ")";
     }
 
     public static Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\n]+)\\)");
@@ -21,7 +28,7 @@ public class DeadlineTask extends Task {
         if (matcher.matches()) {
             boolean isMarked = matcher.group(1).equals("X");
             String description = matcher.group(2);
-            String by = matcher.group(3);
+            LocalDate by = LocalDate.parse(matcher.group(3), dateFormatter);
 
             Task task = new DeadlineTask(description, by);
             if (isMarked) {
