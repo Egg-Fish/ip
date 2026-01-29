@@ -1,3 +1,5 @@
+package egg;
+
 import java.util.Scanner;
 
 public class Egg {
