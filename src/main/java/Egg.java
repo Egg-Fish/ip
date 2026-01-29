@@ -20,7 +20,7 @@ public class Egg {
     
     public Egg() {
         ui = new Ui();
-        storage = new Storage("../data/tasks.txt");
+        storage = new Storage("./data/tasks.txt");
         taskList = storage.load();
     }
 
