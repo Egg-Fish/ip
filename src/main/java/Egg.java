@@ -53,6 +53,10 @@ public class Egg {
             Command command = Parser.parseCommand(commandString);
 
             command.execute(taskList, ui, storage);
+
+            if (commandString.equals("bye")) {
+                break;
+            }
         }
         
         /*

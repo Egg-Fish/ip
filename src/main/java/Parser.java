@@ -24,6 +24,8 @@ public class Parser {
         switch (first) {
         case "todo":
             return parseTodoCommand(commandString);
+        case "bye":
+            return new ByeCommand();
         default:
             return new UnknownCommand(commandString);
         }
