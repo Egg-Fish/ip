@@ -14,7 +14,7 @@ public class EventTask extends Task {
         this.to = to;
     }
 
-    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM d yyyy");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
 
     @Override
     public String toString() {

@@ -12,7 +12,7 @@ public class DeadlineTask extends Task {
         this.by = by;
     }
 
-    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM d yyyy");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
 
     @Override
     public String toString() {
