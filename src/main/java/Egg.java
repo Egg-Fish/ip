@@ -31,11 +31,8 @@ public class Egg {
     public void deleteTask(Task task) {
         taskList.deleteTask(task);
 
-        String l1 = "Noted. I've removed this task:\n";
-        String l2 = "  " + task + "\n";
-        String l3 = "Now you have " + taskList.getSize() + " task(s) in the list.";
+        ui.printTaskDeletedMessage(taskList, task);
 
-        ui.printMessage(l1 + l2 + l3);
     }
 
     public void listTasks() {

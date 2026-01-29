@@ -32,4 +32,12 @@ public class Ui {
 
         printMessage(l1 + l2 + l3);
     }
+
+    public static void printTaskDeletedMessage(TaskList tasks, Task deletedTask) {
+        String l1 = "Noted. I've removed this task:\n";
+        String l2 = "  " + deletedTask + "\n";
+        String l3 = "Now you have " + tasks.getSize() + " task(s) in the list.";
+
+        printMessage(l1 + l2 + l3);
+    }
 }
