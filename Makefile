@@ -9,7 +9,7 @@ MAIN = Egg
 # The wildcard finds all .java files in the src directory
 all:
 	@mkdir -p $(BIN)
-	$(JC) -d $(BIN) $(SRC)/*.java
+	$(JC) -d $(BIN) $(SRC)/**/*.java
 
 # Run the application
 # -cp (classpath) tells Java where to look for the compiled classes
