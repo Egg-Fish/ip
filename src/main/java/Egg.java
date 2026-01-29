@@ -43,6 +43,19 @@ public class Egg {
     public static String tasksFilename = "./data/tasks.txt";
     
     public void run() {
+        ui.printMessage("Hello! I'm Egg \nWhat can I do for you?");
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            String commandString = scanner.nextLine().trim();
+
+            Command command = Parser.parseCommand(commandString);
+
+            command.execute(taskList, ui, storage);
+        }
+        
+        /*
         Pattern markPattern = Pattern.compile("^mark\\s+(\\d+)$");
         Pattern unmarkPattern = Pattern.compile("^unmark\\s+(\\d+)$");
         Pattern todoPattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
@@ -200,8 +213,10 @@ public class Egg {
 
             ui.printMessage("I don't understand, could you say that again?");
         }
+        
 
         ui.printMessage("Bye. Hope to see you again soon!");
+        */
     }
 
     public static void main(String[] args) {
