@@ -25,7 +25,7 @@ public class Storage {
         }
     }
 
-    private void loadTask(TaskList tasks, String taskString) {
+    public void loadTask(TaskList tasks, String taskString) {
         if (taskString.startsWith("[T]")) {
             tasks.addTask(TodoTask.fromString(taskString));
         }
