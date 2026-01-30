@@ -18,9 +18,15 @@ public class Storage {
 
         if (!Files.exists(path)) {
             try {
-                Files.createFile(path);
+                if (path.getParent() != null) {
+                    Files.createDirectories(path.getParent());
+                }
+                
+                if (Files.notExists(path)) {
+                    Files.createFile(path);
+                }
             } catch (IOException e) {
-                System.err.println("Error: " + e.getMessage());
+                System.err.println("Could not create file " + path + "\n" + e.getMessage());
             }
         }
     }
@@ -43,12 +49,14 @@ public class Storage {
     public TaskList load() {
         TaskList tasks = new TaskList();
 
-        try (Stream<String> lines = Files.lines(path)) {
+        try {
+            Stream<String> lines = Files.lines(path);
+            
             lines.forEach(line -> {
                     loadTask(tasks, line);
                 });
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Could not open file: " + path);
         }
 
         return tasks;
