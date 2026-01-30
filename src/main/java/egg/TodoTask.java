@@ -29,7 +29,7 @@ public class TodoTask extends Task {
 
             return task;
         } else {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not parse as todo task: " + s);
         }
     } 
 }
