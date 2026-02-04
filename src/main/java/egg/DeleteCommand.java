@@ -1,12 +1,28 @@
 package egg;
 
+/**
+ * Represents a command to remove a task from the task list.
+ */
 public class DeleteCommand extends Command {
+    /** The 1-based index of the task to be deleted. */
     private int index;
     
+    /**
+     * Initializes a DeleteCommand with the specified task index.
+     *
+     * @param index The 1-based index provided by the user.
+     */
     public DeleteCommand(int index) {
         this.index = index;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This command attempts to retrieve and remove the task at the given index.
+     * If the index is invalid, an error message is displayed to the user.
+     * Changes are persisted to storage upon successful deletion.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
