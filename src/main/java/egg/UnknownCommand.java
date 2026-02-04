@@ -8,7 +8,7 @@ package egg;
 public class UnknownCommand extends Command {
     /** The raw input string that could not be recognized. */
     private String commandString;
-    
+
     /**
      * Initializes an UnknownCommand with the offending input string.
      *

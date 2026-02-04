@@ -6,7 +6,7 @@ public class Egg {
     private Ui ui;
     private TaskList taskList;
     private Storage storage;
-    
+
     public Egg() {
         ui = new Ui();
         storage = new Storage("./data/tasks.txt");
@@ -25,10 +25,10 @@ public class Egg {
                 Command command = Parser.parseCommand(commandString);
 
                 command.execute(taskList, ui, storage);
-            } catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 ui.printMessage(e.getMessage());
             }
-            
+
             if (commandString.equals("bye")) {
                 return;
             }

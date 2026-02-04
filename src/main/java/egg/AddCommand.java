@@ -6,7 +6,7 @@ package egg;
 public class AddCommand extends Command {
     /** The task to be added to the list. */
     private Task task;
-    
+
     /**
      * Initializes an AddCommand with the specified task.
      *

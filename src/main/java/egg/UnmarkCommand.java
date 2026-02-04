@@ -6,7 +6,7 @@ package egg;
 public class UnmarkCommand extends Command {
     /** The 1-based index of the task to be unmarked. */
     private int index;
-    
+
     /**
      * Initializes an UnmarkCommand with the specified task index.
      *

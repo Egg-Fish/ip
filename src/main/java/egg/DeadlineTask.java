@@ -1,12 +1,14 @@
 package egg;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DeadlineTask extends Task {
+    private static Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\n]+)\\)");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
+
     protected LocalDate by;
 
     public DeadlineTask(String description, LocalDate by) {
@@ -14,16 +16,12 @@ public class DeadlineTask extends Task {
         this.by = by;
     }
 
-    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
-
     @Override
     public String toString() {
         String byString = by.format(dateFormatter);
-        
+
         return "[D]" + super.toString() + " (by: " + byString + ")";
     }
-
-    public static Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\n]+)\\)");
 
     public static Task fromString(String s) {
         Matcher matcher = deadlinePattern.matcher(s);
@@ -36,10 +34,9 @@ public class DeadlineTask extends Task {
             if (isMarked) {
                 task.mark();
             }
-            
+
             return task;
-        }
-        else {
+        } else {
             throw new RuntimeException();
         }
     }

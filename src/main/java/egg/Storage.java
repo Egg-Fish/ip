@@ -1,12 +1,12 @@
 package egg;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
 import java.util.List;
-import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Handles the loading and storing of tasks to a local file.
@@ -31,7 +31,7 @@ public class Storage {
                 if (path.getParent() != null) {
                     Files.createDirectories(path.getParent());
                 }
-                
+
                 if (Files.notExists(path)) {
                     Files.createFile(path);
                 }
@@ -52,14 +52,11 @@ public class Storage {
     public void loadTask(TaskList tasks, String taskString) {
         if (taskString.startsWith("[T]")) {
             tasks.addTask(TodoTask.fromString(taskString));
-        }
-        else if (taskString.startsWith("[D]")) {
+        } else if (taskString.startsWith("[D]")) {
             tasks.addTask(DeadlineTask.fromString(taskString));
-        }
-        else if (taskString.startsWith("[E]")) {
+        } else if (taskString.startsWith("[E]")) {
             tasks.addTask(EventTask.fromString(taskString));
-        }
-        else {
+        } else {
             throw new RuntimeException("Could not parse as task: " + taskString);
         }
     }
@@ -74,10 +71,8 @@ public class Storage {
 
         try {
             Stream<String> lines = Files.lines(path);
-            
-            lines.forEach(line -> {
-                    loadTask(tasks, line);
-                });
+
+            lines.forEach(line -> loadTask(tasks, line));
         } catch (IOException e) {
             System.err.println("Could not open file: " + path);
         }

@@ -6,7 +6,7 @@ package egg;
 public class MarkCommand extends Command {
     /** The 1-based index of the task to be marked as done. */
     private int index;
-    
+
     /**
      * Initializes a MarkCommand with the specified task index.
      *

@@ -6,7 +6,7 @@ package egg;
 public class DeleteCommand extends Command {
     /** The 1-based index of the task to be deleted. */
     private int index;
-    
+
     /**
      * Initializes a DeleteCommand with the specified task index.
      *
