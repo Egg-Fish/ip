@@ -1,9 +1,5 @@
 package egg;
 
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Ui {
     private static final int DEFAULT_INDENT_LEVEL = 4;
 
