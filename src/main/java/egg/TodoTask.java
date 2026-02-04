@@ -17,7 +17,7 @@ public class TodoTask extends Task {
 
     public static Task fromString(String s) {
         Matcher matcher = todoPattern.matcher(s);
-        
+
         if (matcher.matches()) {
             boolean isMarked = matcher.group(1).equals("X");
             String description = matcher.group(2);
@@ -31,5 +31,5 @@ public class TodoTask extends Task {
         } else {
             throw new RuntimeException("Could not parse as todo task: " + s);
         }
-    } 
+    }
 }

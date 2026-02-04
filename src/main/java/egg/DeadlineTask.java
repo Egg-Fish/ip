@@ -19,7 +19,7 @@ public class DeadlineTask extends Task {
     @Override
     public String toString() {
         String byString = by.format(dateFormatter);
-        
+
         return "[D]" + super.toString() + " (by: " + byString + ")";
     }
 
@@ -36,7 +36,7 @@ public class DeadlineTask extends Task {
             if (isMarked) {
                 task.mark();
             }
-            
+
             return task;
         }
         else {

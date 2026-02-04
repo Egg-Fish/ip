@@ -21,7 +21,7 @@ public class Storage {
                 if (path.getParent() != null) {
                     Files.createDirectories(path.getParent());
                 }
-                
+
                 if (Files.notExists(path)) {
                     Files.createFile(path);
                 }
@@ -51,7 +51,7 @@ public class Storage {
 
         try {
             Stream<String> lines = Files.lines(path);
-            
+
             lines.forEach(line -> {
                     loadTask(tasks, line);
                 });

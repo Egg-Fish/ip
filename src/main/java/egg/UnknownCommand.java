@@ -3,7 +3,7 @@ package egg;
 
 public class UnknownCommand extends Command {
     private String commandString;
-    
+
     public UnknownCommand(String commandString) {
         this.commandString = commandString;
     }

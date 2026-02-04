@@ -22,7 +22,7 @@ public class EventTask extends Task {
     public String toString() {
         String fromString = from.format(dateFormatter);
         String toString = to.format(dateFormatter);
-        
+
         return "[E]" + super.toString() + " (from: " + fromString + " to: " + toString + ")";
     }
 
@@ -40,7 +40,7 @@ public class EventTask extends Task {
             if (isMarked) {
                 task.mark();
             }
-            
+
             return task;
         }
         else {

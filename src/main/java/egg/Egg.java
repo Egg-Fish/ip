@@ -6,7 +6,7 @@ public class Egg {
     private Ui ui;
     private TaskList taskList;
     private Storage storage;
-    
+
     public Egg() {
         ui = new Ui();
         storage = new Storage("./data/tasks.txt");
@@ -28,7 +28,7 @@ public class Egg {
             } catch (RuntimeException e){
                 ui.printMessage(e.getMessage());
             }
-            
+
             if (commandString.equals("bye")) {
                 return;
             }
