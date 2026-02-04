@@ -25,7 +25,7 @@ public class Egg {
                 Command command = Parser.parseCommand(commandString);
 
                 command.execute(taskList, ui, storage);
-            } catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 ui.printMessage(e.getMessage());
             }
 
