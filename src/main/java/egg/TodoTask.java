@@ -1,7 +1,7 @@
 package egg;
 
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TodoTask extends Task {
     public TodoTask(String description) {

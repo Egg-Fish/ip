@@ -1,9 +1,8 @@
 package egg;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Parser {
     public static Command parseTodoCommand(String commandString) {
