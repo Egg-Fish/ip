@@ -29,4 +29,16 @@ public class TaskList {
     public void deleteTask(Task task) {
         tasks.remove(task);
     }
+
+    public TaskList filterByKeyword(String keyword) {
+        TaskList filteredTasks = new TaskList();
+
+        for (Task t : this.getTasks()) {
+            if (t.getDescription().contains(keyword)) {
+                filteredTasks.addTask(t);
+            }
+        }
+
+        return filteredTasks;
+    }
 }

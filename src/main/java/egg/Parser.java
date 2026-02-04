@@ -126,6 +126,21 @@ public class Parser {
             throw new RuntimeException("Could not parse as delete command: " + commandString);
         }
     }
+
+    public static Command parseFindCommand(String commandString) {
+        Pattern pattern = Pattern.compile("^find\\s+([^\\n]+?)\\s*$");
+        Matcher matcher = pattern.matcher(commandString);
+        
+        if (matcher.matches()) {
+            String keyword = matcher.group(1);
+                
+            Command command = new FindCommand(keyword);
+            
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as find command: " + commandString);
+        }
+    }
     
     public static Command parseCommand(String commandString) {
         String first = commandString.trim().split(" ", 2)[0];
@@ -143,6 +158,8 @@ public class Parser {
             return parseUnmarkCommand(commandString);
         case "delete":
             return parseDeleteCommand(commandString);
+        case "find":
+            return parseFindCommand(commandString);
         case "list":
             return new ListCommand();
         case "bye":
