@@ -6,6 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EventTask extends Task {
+    private static Pattern eventPattern =
+        Pattern.compile("\\[E\\]\\[([ X])\\] ([^(]+) \\(from: ([^\\n]+) to: ([^\\n]+)\\)");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
+
     protected LocalDate from;
     protected LocalDate to;
 
@@ -15,8 +19,6 @@ public class EventTask extends Task {
         this.to = to;
     }
 
-    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
-
     @Override
     public String toString() {
         String fromString = from.format(dateFormatter);
@@ -24,8 +26,6 @@ public class EventTask extends Task {
 
         return "[E]" + super.toString() + " (from: " + fromString + " to: " + toString + ")";
     }
-
-    public static Pattern eventPattern = Pattern.compile("\\[E\\]\\[([ X])\\] ([^(]+) \\(from: ([^\\n]+) to: ([^\\n]+)\\)");
 
     public static Task fromString(String s) {
         Matcher matcher = eventPattern.matcher(s);
@@ -41,8 +41,7 @@ public class EventTask extends Task {
             }
 
             return task;
-        }
-        else {
+        } else {
             throw new RuntimeException();
         }
     }
