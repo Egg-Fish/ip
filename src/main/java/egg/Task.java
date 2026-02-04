@@ -7,7 +7,7 @@ package egg;
 public class Task {
     /** The textual description of the task. */
     protected String description;
-    
+
     /** The status of the task, where true indicates completion. */
     protected boolean isDone;
 

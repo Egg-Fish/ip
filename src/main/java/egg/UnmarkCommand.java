@@ -19,8 +19,8 @@ public class UnmarkCommand extends Command {
     /**
      * {@inheritDoc}
      * <p>
-     * This command retrieves the task at the specified index, 
-     * calls its unmark method, notifies the user, and persists 
+     * This command retrieves the task at the specified index,
+     * calls its unmark method, notifies the user, and persists
      * the change to storage.
      */
     @Override

@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Manages an in-memory list of tasks.
- * Provides methods to add, delete, and retrieve tasks, serving as a 
+ * Provides methods to add, delete, and retrieve tasks, serving as a
  * wrapper around an {@link ArrayList} of {@link Task} objects.
  */
 public class TaskList {
@@ -39,7 +39,7 @@ public class TaskList {
 
     /**
      * Retrieves a task based on its 1-based index.
-     * * @param index The 1-based index of the task (e.g., 1 for the first task).
+     * @param index The 1-based index of the task (e.g., 1 for the first task).
      * @return The {@link Task} at the specified position.
      * @throws IndexOutOfBoundsException If the index is out of range.
      */

@@ -2,11 +2,11 @@ package egg;
 
 /**
  * Represents an executable command in the application.
- * This is an abstract base class for all specific command implementations, 
+ * This is an abstract base class for all specific command implementations,
  * such as adding, deleting, or marking tasks.
  */
 public abstract class Command {
-    
+
     /**
      * Executes the specific command.
      * @param tasks   The {@link TaskList} instance.

@@ -2,7 +2,7 @@ package egg;
 
 /**
  * Represents an invalid or unrecognized command.
- * This class is used as a fallback when the parser cannot match 
+ * This class is used as a fallback when the parser cannot match
  * user input to a known command type.
  */
 public class UnknownCommand extends Command {

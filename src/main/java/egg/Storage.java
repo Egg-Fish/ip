@@ -42,7 +42,7 @@ public class Storage {
     }
 
     /**
-     * Parses a single line from the storage file and adds the corresponding 
+     * Parses a single line from the storage file and adds the corresponding
      * Task to the TaskList.
      *
      * @param tasks      The TaskList to populate.
