@@ -9,6 +9,10 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void mark() {
         isDone = true;
     }
