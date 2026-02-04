@@ -1,0 +1,16 @@
+package egg;
+
+public class FindCommand extends Command {
+    private String keyword;
+
+    public FindCommand(String keyword) {
+        this.keyword = keyword;
+    }
+   
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        TaskList filteredTasks = tasks.filterByKeyword(keyword);
+        
+        ui.printTaskList(filteredTasks, "Here are the matching tasks in your list:");
+    }
+}

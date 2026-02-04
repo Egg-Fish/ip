@@ -39,9 +39,9 @@ public class Ui {
         printMessage(l1 + l2 + l3);
     }
 
-    public static void printTaskList(TaskList tasks) {
-        String s = "Here are the tasks in your list:\n";
-
+    public static void printTaskList(TaskList tasks, String message) {
+        String s = message + "\n";
+        
         for (int i = 1; i <= tasks.getSize(); i++) {
             s += i + "." + tasks.getTaskAtIndex(i) + "\n";
         }
