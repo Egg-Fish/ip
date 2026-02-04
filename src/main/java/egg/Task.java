@@ -4,7 +4,7 @@ package egg;
  * Represents a task in the system.
  * A task consists of a description and a completion status.
  */
-public abstract class Task {
+public class Task {
     /** The textual description of the task. */
     protected String description;
     
