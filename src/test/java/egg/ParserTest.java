@@ -15,7 +15,7 @@ public class ParserTest {
     @BeforeEach
     public void setUp() {
         tasks = new TaskList();
-        ui = new Ui();
+        ui = new TextUi();
         storage = new Storage("./data/test_tasks.txt");
 
         storage.store(tasks);

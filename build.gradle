@@ -45,7 +45,7 @@ test {
 }
 
 application {
-    mainClass.set("egg.Egg")
+    mainClass.set("egg.Launcher")
 }
 
 shadowJar {
