@@ -37,6 +37,17 @@ public class Parser {
         }
     }
 
+    public static LocalDate parseDate(String dateString) {
+        try {
+            return LocalDate.parse(dateString);
+        } catch (Exception e) {
+            String message = "Could not parse as date: " + dateString + "\n";
+            message += "Please enter date in the format yyyy-MM-dd. (e.g., 2026-12-31)";
+
+            throw new RuntimeException(message);
+        }
+    }
+
     public static Command parseDeadlineCommand(String commandString) {
         Pattern pattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
@@ -45,16 +56,12 @@ public class Parser {
             String description = matcher.group(1);
             String byString = matcher.group(2);
 
-            try {
-                LocalDate by = LocalDate.parse(byString);
+            LocalDate by = parseDate(byString);
 
-                Task newTask = new DeadlineTask(description, by);
-                Command command = new AddCommand(newTask);
+            Task newTask = new DeadlineTask(description, by);
+            Command command = new AddCommand(newTask);
 
-                return command;
-            } catch (Exception e) {
-                throw new RuntimeException("Could not parse as date: " + byString);
-            }
+            return command;
         } else {
             throw new RuntimeException("Could not parse as deadline command: " + commandString);
         }
@@ -69,20 +76,8 @@ public class Parser {
             String fromString = matcher.group(2);
             String toString = matcher.group(3);
 
-            LocalDate from;
-            LocalDate to;
-
-            try {
-                from = LocalDate.parse(fromString);
-            } catch (Exception e) {
-                throw new RuntimeException("Could not parse as date: " + fromString);
-            }
-
-            try {
-                to = LocalDate.parse(toString);
-            } catch (Exception e) {
-                throw new RuntimeException("Could not parse as date: " + toString);
-            }
+            LocalDate from = parseDate(fromString);
+            LocalDate to = parseDate(toString);
 
             if (from.isAfter(to)) {
                 throw new RuntimeException("Start date cannot be after end date");
