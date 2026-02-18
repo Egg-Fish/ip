@@ -7,6 +7,7 @@ import egg.command.DeleteCommand;
 import egg.command.FindCommand;
 import egg.command.ListCommand;
 import egg.command.MarkCommand;
+import egg.command.TagCommand;
 import egg.command.UnknownCommand;
 import egg.command.UnmarkCommand;
 
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 public class Parser {
     public static Command parseTodoCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -52,7 +53,7 @@ public class Parser {
 
     public static Command parseDeadlineCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -73,7 +74,7 @@ public class Parser {
 
     public static Command parseEventCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -100,7 +101,7 @@ public class Parser {
 
     public static Command parseMarkCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^mark\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -117,7 +118,7 @@ public class Parser {
 
     public static Command parseUnmarkCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^unmark\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -134,7 +135,7 @@ public class Parser {
 
     public static Command parseDeleteCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^delete\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -151,7 +152,7 @@ public class Parser {
 
     public static Command parseFindCommand(String commandString) {
         assert commandString != null;
-        
+
         Pattern pattern = Pattern.compile("^find\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -166,9 +167,31 @@ public class Parser {
         }
     }
 
+    public static Command parseTagCommand(String commandString) {
+        assert commandString != null;
+
+        Pattern pattern = Pattern.compile("^tag\\s+(\\d+)\\s+(.+)$");
+        Matcher matcher = pattern.matcher(commandString);
+
+        if (matcher.matches()) {
+            int index = Integer.parseInt(matcher.group(1));
+            String tag = matcher.group(2);
+
+            if (tag.contains(" ")) {
+                throw new RuntimeException("Tag cannot contain spaces: " + tag);
+            }
+
+            Command command = new TagCommand(index, tag);
+
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as tag command: " + commandString);
+        }
+    }
+
     public static Command parseCommand(String commandString) {
         assert commandString != null;
-        
+
         String first = commandString.trim().split(" ", 2)[0];
 
         switch (first) {
@@ -186,6 +209,8 @@ public class Parser {
             return parseDeleteCommand(commandString);
         case "find":
             return parseFindCommand(commandString);
+        case "tag":
+            return parseTagCommand(commandString);
         case "list":
             return new ListCommand();
         case "bye":
