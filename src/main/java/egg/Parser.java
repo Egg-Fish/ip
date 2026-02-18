@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 
 public class Parser {
     public static Command parseTodoCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^todo\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -49,6 +51,8 @@ public class Parser {
     }
 
     public static Command parseDeadlineCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^deadline\\s+([^\\n]+?)\\s+/by\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -68,6 +72,8 @@ public class Parser {
     }
 
     public static Command parseEventCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^event\\s+([^\\n]+?)\\s+/from\\s+([^\\n]+?)\\s+/to\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -93,6 +99,8 @@ public class Parser {
     }
 
     public static Command parseMarkCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^mark\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -108,6 +116,8 @@ public class Parser {
     }
 
     public static Command parseUnmarkCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^unmark\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -123,6 +133,8 @@ public class Parser {
     }
 
     public static Command parseDeleteCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^delete\\s+(\\d+)$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -138,6 +150,8 @@ public class Parser {
     }
 
     public static Command parseFindCommand(String commandString) {
+        assert commandString != null;
+        
         Pattern pattern = Pattern.compile("^find\\s+([^\\n]+?)\\s*$");
         Matcher matcher = pattern.matcher(commandString);
 
@@ -153,6 +167,8 @@ public class Parser {
     }
 
     public static Command parseCommand(String commandString) {
+        assert commandString != null;
+        
         String first = commandString.trim().split(" ", 2)[0];
 
         switch (first) {
