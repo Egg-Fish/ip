@@ -40,7 +40,7 @@ public class DeadlineTask extends Task {
 
             return task;
         } else {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not parse as deadline task: " + s);
         }
     }
 }

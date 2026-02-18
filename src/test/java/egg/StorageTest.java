@@ -90,4 +90,15 @@ public class StorageTest {
             assertEquals("Could not parse as todo task: " + taskString, e.getMessage());
         }
     }
+
+    @Test
+    public void loadTask_invalidDeadline_exceptionThrown() {
+        String taskString = "[D][ ] anomaly (by: Fri, 02 Jan 2026) (";
+
+        try {
+            storage.loadTask(tasks, taskString);
+        } catch (Exception e) {
+            assertEquals("Could not parse as deadline task: " + taskString, e.getMessage());
+        }
+    }
 }

@@ -45,7 +45,7 @@ public class EventTask extends Task {
 
             return task;
         } else {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not parse as event task: " + s);
         }
     }
 }
