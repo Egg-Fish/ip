@@ -29,6 +29,8 @@ public class Egg extends Application {
     }
 
     public void runCommand(String commandString) {
+        assert commandString != null;
+        
         try {
             Command command = Parser.parseCommand(commandString);
 

@@ -26,6 +26,9 @@ public class TextUi extends Ui {
 
     @Override
     public void printTaskAddedMessage(TaskList tasks, Task addedTask) {
+        assert tasks != null;
+        assert addedTask != null;
+
         String l1 = "Got it. I've added this task:\n";
         String l2 = "  " + addedTask + "\n";
         String l3 = "Now you have " + tasks.getSize() + " task(s) in the list.";
@@ -35,6 +38,9 @@ public class TextUi extends Ui {
 
     @Override
     public  void printTaskDeletedMessage(TaskList tasks, Task deletedTask) {
+        assert tasks != null;
+        assert deletedTask != null;
+
         String l1 = "Noted. I've removed this task:\n";
         String l2 = "  " + deletedTask + "\n";
         String l3 = "Now you have " + tasks.getSize() + " task(s) in the list.";
@@ -44,6 +50,8 @@ public class TextUi extends Ui {
 
     @Override
     public void printTaskList(TaskList tasks, String message) {
+        assert tasks != null;
+
         String s = message + "\n";
         
         for (int i = 1; i <= tasks.getSize(); i++) {
