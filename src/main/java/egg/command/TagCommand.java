@@ -31,8 +31,8 @@ public class TagCommand extends Command {
      * {@inheritDoc}
      * <p>
      * This command retrieves the task at the specified index,
-     * calls its mark method, notifies the user of the success,
-     * and persists the change to storage.
+     * adds the tag, notifies the user of the success, and
+     * persists the change to storage.
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
