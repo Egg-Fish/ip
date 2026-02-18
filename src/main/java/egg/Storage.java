@@ -23,6 +23,18 @@ public class Storage {
     /** The path to the file where tasks are stored. */
     private Path path;
 
+    private static void createFile(Path path) {
+        try {
+            if (path.getParent() != null) {
+                Files.createDirectories(path.getParent());
+            }
+
+            Files.createFile(path);
+        } catch (IOException e) {
+            System.err.println("Could not create file " + path + "\n" + e.getMessage());
+        }
+    }
+
     /**
      * Initializes a Storage object with a specified filename.
      * If the file or its parent directories do not exist, they will be created.
@@ -33,17 +45,7 @@ public class Storage {
         path = Paths.get(filename);
 
         if (!Files.exists(path)) {
-            try {
-                if (path.getParent() != null) {
-                    Files.createDirectories(path.getParent());
-                }
-
-                if (Files.notExists(path)) {
-                    Files.createFile(path);
-                }
-            } catch (IOException e) {
-                System.err.println("Could not create file " + path + "\n" + e.getMessage());
-            }
+            createFile(path);
         }
     }
 
