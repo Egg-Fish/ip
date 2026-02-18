@@ -1,5 +1,8 @@
 package egg;
 
+import egg.task.Task;
+import egg.task.TaskList;
+
 public abstract class Ui {
     public abstract void printMessage(String message);
     public abstract void printTaskAddedMessage(TaskList tasks, Task addedTask);

@@ -1,4 +1,4 @@
-package egg;
+package egg.task;
 
 import java.util.ArrayList;
 import java.util.List;

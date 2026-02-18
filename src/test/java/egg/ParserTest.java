@@ -1,4 +1,25 @@
-package egg;
+package egg.task;
+
+import egg.Parser;
+import egg.Storage;
+import egg.TextUi;
+import egg.Ui;
+
+import egg.command.AddCommand;
+import egg.command.ByeCommand;
+import egg.command.Command;
+import egg.command.DeleteCommand;
+import egg.command.FindCommand;
+import egg.command.ListCommand;
+import egg.command.MarkCommand;
+import egg.command.UnknownCommand;
+import egg.command.UnmarkCommand;
+
+import egg.task.DeadlineTask;
+import egg.task.EventTask;
+import egg.task.Task;
+import egg.task.TaskList;
+import egg.task.TodoTask;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,9 @@
-package egg;
+package egg.command;
+
+import egg.Storage;
+import egg.task.Task;
+import egg.task.TaskList;
+import egg.Ui;
 
 /**
  * Represents a command to add a new task to the task list.

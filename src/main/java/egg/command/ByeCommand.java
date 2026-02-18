@@ -1,4 +1,8 @@
-package egg;
+package egg.command;
+
+import egg.Storage;
+import egg.task.TaskList;
+import egg.Ui;
 
 /**
  * Represents a command to terminate the application.

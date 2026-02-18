@@ -1,4 +1,4 @@
-package egg;
+package egg.task;
 
 /**
  * Represents a task in the system.
