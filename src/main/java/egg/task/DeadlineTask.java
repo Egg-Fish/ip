@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeadlineTask extends Task {
-    private static Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\n]+)\\)");
+    private static Pattern deadlinePattern = Pattern.compile("\\[D\\]\\[([ X])\\] ([^\\n]+) \\(by: ([^\\)]+)\\) \\((.*)\\)");
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
 
     protected LocalDate by;
@@ -20,7 +20,7 @@ public class DeadlineTask extends Task {
     public String toString() {
         String byString = by.format(dateFormatter);
 
-        return "[D]" + super.toString() + " (by: " + byString + ")";
+        return "[D]" + super.toString() + " (by: " + byString + ")" + " (" + super.getTagString() + ")";
     }
 
     public static Task fromString(String s) {
@@ -29,11 +29,14 @@ public class DeadlineTask extends Task {
             boolean isMarked = matcher.group(1).equals("X");
             String description = matcher.group(2);
             LocalDate by = LocalDate.parse(matcher.group(3), dateFormatter);
+            String tagString = matcher.group(4);
 
             Task task = new DeadlineTask(description, by);
             if (isMarked) {
                 task.mark();
             }
+
+            task.addTagsFromString(tagString);
 
             return task;
         } else {

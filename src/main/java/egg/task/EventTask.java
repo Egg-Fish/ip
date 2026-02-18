@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class EventTask extends Task {
     private static Pattern eventPattern =
-        Pattern.compile("\\[E\\]\\[([ X])\\] ([^(]+) \\(from: ([^\\n]+) to: ([^\\n]+)\\)");
+        Pattern.compile("\\[E\\]\\[([ X])\\] ([^(]+) \\(from: ([^\\n]+) to: ([^\\n]+)\\) \\((.*)\\)");
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy");
 
     protected LocalDate from;
@@ -24,7 +24,7 @@ public class EventTask extends Task {
         String fromString = from.format(dateFormatter);
         String toString = to.format(dateFormatter);
 
-        return "[E]" + super.toString() + " (from: " + fromString + " to: " + toString + ")";
+        return "[E]" + super.toString() + " (from: " + fromString + " to: " + toString + ")" + " (" + super.getTagString() + ")";
     }
 
     public static Task fromString(String s) {
@@ -34,11 +34,14 @@ public class EventTask extends Task {
             String description = matcher.group(2);
             LocalDate from = LocalDate.parse(matcher.group(3), dateFormatter);
             LocalDate to = LocalDate.parse(matcher.group(4), dateFormatter);
+            String tagString = matcher.group(5);
 
             EventTask task = new EventTask(description, from, to);
             if (isMarked) {
                 task.mark();
             }
+
+            task.addTagsFromString(tagString);
 
             return task;
         } else {
