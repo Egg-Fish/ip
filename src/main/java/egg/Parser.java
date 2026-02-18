@@ -9,6 +9,13 @@ import egg.command.ListCommand;
 import egg.command.MarkCommand;
 import egg.command.UnknownCommand;
 import egg.command.UnmarkCommand;
+
+import egg.task.DeadlineTask;
+import egg.task.EventTask;
+import egg.task.Task;
+import egg.task.TaskList;
+import egg.task.TodoTask;
+
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

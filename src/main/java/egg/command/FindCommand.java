@@ -1,7 +1,7 @@
 package egg.command;
 
 import egg.Storage;
-import egg.TaskList;
+import egg.task.TaskList;
 import egg.Ui;
 
 public class FindCommand extends Command {

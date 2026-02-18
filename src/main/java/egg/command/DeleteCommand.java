@@ -1,8 +1,8 @@
 package egg.command;
 
 import egg.Storage;
-import egg.Task;
-import egg.TaskList;
+import egg.task.Task;
+import egg.task.TaskList;
 import egg.Ui;
 
 /**

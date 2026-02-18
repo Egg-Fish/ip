@@ -1,5 +1,8 @@
 package egg;
 
+import egg.task.Task;
+import egg.task.TaskList;
+
 public class TextUi extends Ui {
     private static final int DEFAULT_INDENT_LEVEL = 4;
 
