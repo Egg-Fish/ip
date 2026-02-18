@@ -41,14 +41,14 @@ public class ParserTest {
 
         storage.store(tasks);
     }
-    
+
     @Test
     public void parseDeadlineCommand_normal_success(){
         String s = "deadline my task there /by 2026-01-02";
         Command c = Parser.parseDeadlineCommand(s);
         c.execute(tasks, ui, storage);
         DeadlineTask task = (DeadlineTask) tasks.getTaskAtIndex(1);
-        
+
         assertEquals("my task there", task.description);
         assertEquals(LocalDate.parse("2026-01-02"), task.by);
     }
@@ -59,7 +59,7 @@ public class ParserTest {
         Command c = Parser.parseDeadlineCommand(s);
         c.execute(tasks, ui, storage);
         DeadlineTask task = (DeadlineTask) tasks.getTaskAtIndex(1);
-        
+
         assertEquals("my task here", task.description);
         assertEquals(LocalDate.parse("2026-01-02"), task.by);
     }
@@ -71,7 +71,9 @@ public class ParserTest {
         try {
             Command c = Parser.parseDeadlineCommand(s);
         } catch (Exception e) {
-            assertEquals("Could not parse as date: today", e.getMessage());
+            String expected = "Could not parse as date: today\n" +
+                "Please enter date in the format yyyy-MM-dd. (e.g., 2026-12-31)";
+            assertEquals(expected, e.getMessage());
         }
     }
 
@@ -114,7 +116,7 @@ public class ParserTest {
         Command c = Parser.parseEventCommand(s);
         c.execute(tasks, ui, storage);
         EventTask task = (EventTask) tasks.getTaskAtIndex(1);
-        
+
         assertEquals("hackathon", task.description);
         assertEquals(LocalDate.parse("2026-01-02"), task.from);
         assertEquals(LocalDate.parse("2026-06-07"), task.to);
@@ -126,7 +128,7 @@ public class ParserTest {
         Command c = Parser.parseEventCommand(s);
         c.execute(tasks, ui, storage);
         EventTask task = (EventTask) tasks.getTaskAtIndex(1);
-        
+
         assertEquals("hackathon", task.description);
         assertEquals(LocalDate.parse("2026-01-02"), task.from);
         assertEquals(LocalDate.parse("2026-06-07"), task.to);

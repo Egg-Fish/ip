@@ -39,7 +39,7 @@ public class StorageTest {
 
     @Test
     public void loadTask_todoTask_success() {
-        String taskString = "[T][ ] my todo task";
+        String taskString = "[T][ ] my todo task ()";
         storage.loadTask(tasks, taskString);
 
         TodoTask task = (TodoTask) tasks.getTaskAtIndex(1);
@@ -49,7 +49,7 @@ public class StorageTest {
 
     @Test
     public void loadTask_deadlineTask_success() {
-        String taskString = "[D][ ] my deadline task (by: Fri, 02 Jan 2026)";
+        String taskString = "[D][ ] my deadline task (by: Fri, 02 Jan 2026) ()";
         storage.loadTask(tasks, taskString);
 
         DeadlineTask task = (DeadlineTask) tasks.getTaskAtIndex(1);
@@ -59,7 +59,7 @@ public class StorageTest {
 
     @Test
     public void loadTask_eventTask_success() {
-        String taskString = "[E][ ] my event task (from: Fri, 02 Jan 2026 to: Sun, 07 Jun 2026)";
+        String taskString = "[E][ ] my event task (from: Fri, 02 Jan 2026 to: Sun, 07 Jun 2026) ()";
         storage.loadTask(tasks, taskString);
 
         EventTask task = (EventTask) tasks.getTaskAtIndex(1);
