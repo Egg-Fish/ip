@@ -1,4 +1,8 @@
-package egg;
+package egg.command;
+
+import egg.Storage;
+import egg.TaskList;
+import egg.Ui;
 
 public class FindCommand extends Command {
     private String keyword;

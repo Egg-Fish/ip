@@ -1,4 +1,8 @@
-package egg;
+package egg.command;
+
+import egg.Storage;
+import egg.TaskList;
+import egg.Ui;
 
 /**
  * Represents an executable command in the application.

@@ -1,4 +1,9 @@
-package egg;
+package egg.command;
+
+import egg.Storage;
+import egg.Task;
+import egg.TaskList;
+import egg.Ui;
 
 /**
  * Represents a command to remove a task from the task list.

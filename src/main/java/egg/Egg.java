@@ -1,5 +1,6 @@
 package egg;
 
+import egg.command.Command;
 import java.util.Scanner;
 import javafx.application.Application;
 import javafx.scene.Scene;
