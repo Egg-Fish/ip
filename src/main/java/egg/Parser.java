@@ -10,6 +10,7 @@ import egg.command.MarkCommand;
 import egg.command.TagCommand;
 import egg.command.UnknownCommand;
 import egg.command.UnmarkCommand;
+import egg.command.UntagCommand;
 
 import egg.task.DeadlineTask;
 import egg.task.EventTask;
@@ -189,6 +190,28 @@ public class Parser {
         }
     }
 
+    public static Command parseUntagCommand(String commandString) {
+        assert commandString != null;
+
+        Pattern pattern = Pattern.compile("^untag\\s+(\\d+)\\s+(.+)$");
+        Matcher matcher = pattern.matcher(commandString);
+
+        if (matcher.matches()) {
+            int index = Integer.parseInt(matcher.group(1));
+            String tag = matcher.group(2);
+
+            if (tag.contains(" ")) {
+                throw new RuntimeException("Tag cannot contain spaces: " + tag);
+            }
+
+            Command command = new UntagCommand(index, tag);
+
+            return command;
+        } else {
+            throw new RuntimeException("Could not parse as untag command: " + commandString);
+        }
+    }
+
     public static Command parseCommand(String commandString) {
         assert commandString != null;
 
@@ -211,6 +234,8 @@ public class Parser {
             return parseFindCommand(commandString);
         case "tag":
             return parseTagCommand(commandString);
+        case "untag":
+            return parseUntagCommand(commandString);
         case "list":
             return new ListCommand();
         case "bye":
