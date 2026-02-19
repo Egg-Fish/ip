@@ -9,7 +9,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,8 +28,8 @@ import javafx.application.Platform;
 
 
 public class GraphicUi extends Ui {
-    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private final Image eggImage = new Image(this.getClass().getResourceAsStream("/images/DaEgg.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.jpg"));
+    private final Image eggImage = new Image(this.getClass().getResourceAsStream("/images/DaEgg.jpg"));
 
     private Stage stage;
     private ScrollPane scrollPane;
@@ -74,6 +78,7 @@ public class GraphicUi extends Ui {
 
         // Allow the layout to grow with the window
         mainLayout.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        dialogContainer.setPadding(new Insets(15));
 
         // --- Dynamic Anchoring ---
         // Pin ScrollPane to Top, Left, and Right.
@@ -143,19 +148,44 @@ public class GraphicUi extends Ui {
             displayPicture = new ImageView(i);
             this.getChildren().addAll(text, displayPicture);
 
-            this.setSpacing(10);
+            this.setSpacing(15);
 
-            // Force text to black and add a clean bubble look
+            // --- 1. Rounding the Images ---
+
+            // --- INCREASE IMAGE SIZE ---
+            double imageSize = 70.0;
+            displayPicture.setFitWidth(imageSize);
+            displayPicture.setFitHeight(imageSize);
+
+            // The radius must be exactly half of the fit size to stay a perfect circle
+            double radius = imageSize / 2.0;
+            Circle clip = new Circle(radius, radius, radius);
+            displayPicture.setClip(clip);
+
+            // --- 2. Styling the Text Bubble with a Shadow ---
+            DropShadow dropShadow = new DropShadow();
+            dropShadow.setRadius(5.0);
+            dropShadow.setOffsetX(2.0);
+            dropShadow.setOffsetY(2.0);
+            dropShadow.setColor(Color.color(0, 0, 0, 0.1)); // Very subtle 10% black
+
             text.setStyle("-fx-text-fill: black; " +
-                          "-fx-background-color: rgba(255, 255, 255, 0.7); " + // Semi-transparent white bubble
-                          "-fx-background-radius: 10; " +
-                          "-fx-padding: 10; " +
-                          "-fx-font-family: 'Arial';"); // Clean font
+                          "-fx-background-color: white; " +
+                          "-fx-background-radius: 15; " +
+                          "-fx-padding: 12; " +
+                          "-fx-font-family: 'Segoe UI', Arial;");
+            text.setEffect(dropShadow); // Apply the shadow here
 
             text.setWrapText(true);
-            displayPicture.setFitWidth(100.0);
-            displayPicture.setFitHeight(100.0);
             this.setAlignment(Pos.TOP_RIGHT);
+        }
+
+        /**
+         * Changes the font to monospace and optionally adjusts the bubble color.
+         */
+        private void changeToMonospace() {
+            // We append the new font-family to the existing style
+            text.setStyle(text.getStyle() + "-fx-font-family: 'Courier New', monospace;");
         }
 
         private void flip() {
@@ -172,6 +202,7 @@ public class GraphicUi extends Ui {
         public static DialogBox createEggDialog(String s, Image i) {
             var db = new DialogBox(s, i);
             db.flip();
+            db.changeToMonospace();
             return db;
         }
     }
