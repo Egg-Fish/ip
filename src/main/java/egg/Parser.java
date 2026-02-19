@@ -31,7 +31,7 @@ public class Parser {
 
     /**
      * Parses a "todo" command string.
-     * * @param commandString The raw input from the user.
+     * @param commandString The raw input from the user.
      * @return An {@link AddCommand} containing the new {@link TodoTask}.
      * @throws RuntimeException If the input does not match the required format.
      */
@@ -52,7 +52,7 @@ public class Parser {
 
     /**
      * Converts a string representation of a date into a {@link LocalDate} object.
-     * * @param dateString The date string in yyyy-MM-dd format.
+     * @param dateString The date string in yyyy-MM-dd format.
      * @return The parsed {@link LocalDate}.
      * @throws RuntimeException If the date format is invalid.
      */
@@ -68,7 +68,7 @@ public class Parser {
 
     /**
      * Parses a "deadline" command string including a description and a due date.
-     * * @param commandString Raw input expected in format: deadline [desc] /by [date].
+     * @param commandString Raw input expected in format: deadline [desc] /by [date].
      * @return An {@link AddCommand} containing the new {@link DeadlineTask}.
      * @throws RuntimeException If parsing fails or the date format is incorrect.
      */
@@ -92,7 +92,7 @@ public class Parser {
 
     /**
      * Parses an "event" command string including start and end dates.
-     * * @param commandString Raw input expected in format: event [desc] /from [date] /to [date].
+     * @param commandString Raw input expected in format: event [desc] /from [date] /to [date].
      * @return An {@link AddCommand} containing the new {@link EventTask}.
      * @throws RuntimeException If parsing fails or the start date is after the end date.
      */
@@ -123,7 +123,7 @@ public class Parser {
 
     /**
      * Parses a "mark" command to identify the task index to be completed.
-     * * @param commandString Raw input (e.g., "mark 1").
+     * @param commandString Raw input (e.g., "mark 1").
      * @return A {@link MarkCommand} for the specified index.
      */
     public static Command parseMarkCommand(String commandString) {
@@ -141,7 +141,7 @@ public class Parser {
 
     /**
      * Parses an "unmark" command to revert a task's completed status.
-     * * @param commandString Raw input (e.g., "unmark 1").
+     * @param commandString Raw input (e.g., "unmark 1").
      * @return An {@link UnmarkCommand} for the specified index.
      */
     public static Command parseUnmarkCommand(String commandString) {
@@ -159,7 +159,7 @@ public class Parser {
 
     /**
      * Parses a "delete" command to remove a task from the list.
-     * * @param commandString Raw input (e.g., "delete 1").
+     * @param commandString Raw input (e.g., "delete 1").
      * @return A {@link DeleteCommand} for the specified index.
      */
     public static Command parseDeleteCommand(String commandString) {
@@ -177,7 +177,7 @@ public class Parser {
 
     /**
      * Parses a "find" command to search for tasks by keyword.
-     * * @param commandString Raw input (e.g., "find book").
+     * @param commandString Raw input (e.g., "find book").
      * @return A {@link FindCommand} with the target keyword.
      */
     public static Command parseFindCommand(String commandString) {
@@ -195,7 +195,7 @@ public class Parser {
 
     /**
      * Parses a "tag" command to add a label to a task.
-     * * @param commandString Raw input (e.g., "tag 1 urgent").
+     * @param commandString Raw input (e.g., "tag 1 urgent").
      * @return A {@link TagCommand} for the specified task and tag.
      * @throws RuntimeException If the tag contains spaces.
      */
@@ -219,7 +219,7 @@ public class Parser {
 
     /**
      * Parses an "untag" command to remove a label from a task.
-     * * @param commandString Raw input (e.g., "untag 1 urgent").
+     * @param commandString Raw input (e.g., "untag 1 urgent").
      * @return An {@link UntagCommand} for the specified task and tag.
      */
     public static Command parseUntagCommand(String commandString) {
@@ -243,7 +243,7 @@ public class Parser {
     /**
      * The main entry point for parsing. Determines the command type and
      * routes the input to the appropriate sub-parser.
-     * * @param commandString The full raw input from the user.
+     * @param commandString The full raw input from the user.
      * @return The specific {@link Command} to be executed.
      */
     public static Command parseCommand(String commandString) {
