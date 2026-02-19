@@ -42,7 +42,7 @@ Egg will confirm the addition and display the added task.
 ## Adding Events
 Events are for tasks that need to be completed within a specific date range. Egg will track the date and display it clearly with "from" and "to" labels.
 
-**Usage:** `deadline <description> /from <yyyy-mm-dd> /to <yyyy-mm-dd>`
+**Usage:** `event <description> /from <yyyy-mm-dd> /to <yyyy-mm-dd>`
 
 * **Description:** Any text describing the task.
 * **Date:** Must follow the ISO format: `yyyy-mm-dd`.
@@ -52,6 +52,45 @@ Events are for tasks that need to be completed within a specific date range. Egg
 
 **Expected Outcome:**
 Egg will confirm the addition and display the added task.
+
+---
+
+## Marking/Unmarking Tasks
+When a task is complete, you can mark it as such. Same goes for when a previously-marked task should be incomplete
+
+**Usage:** `(mark|unmark) <index>`
+
+* **Index:** The task number shown in the `list` command.
+
+* **Example:** `mark 1`
+* **Example:** `unmark 2`
+
+**Expected Outcome:**
+Egg will confirm the marking/unmarking and display the marked/unmarked task.
+
+---
+
+## Listing Tasks
+List down all tasks.
+
+**Usage:** `list`
+
+**Expected Outcome:**
+Egg will list all tasks.
+
+---
+
+## Deleting Tasks
+When a task is no longer needed, you can delete it.
+
+**Usage:** `delete <index>`
+
+* **Index:** The task number shown in the `list` command.
+
+**Example:** `delete 1`
+
+**Expected Outcome:**
+Egg will confirm the deletion and display the deleted task.
 
 ---
 
