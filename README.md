@@ -9,3 +9,11 @@ This project uses Gradle for building. To run the application in the root direct
 gradlew run
 ```
 
+## AI Acknowledgement
+
+Google Gemini was used for
+- Adding JavaDoc documentation
+- Refactoring of existing source code
+- Getting through JavaFX
+
+All commits containing AI-generated code can be found in `branch-A-AiAssisted`
